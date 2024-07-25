@@ -15,13 +15,27 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String location = 'ankara';
-  double temperature = 20.0;
+  String location = 'sydney';
+  double? temperature;
   final String key = 'b7e858e8f208308427e3567a1b9f9ca6';
   var locationData;
 
   Future <void>getLocationData()async{
-    locationData = await http.get(Uri.parse('https://api.openweathermap.org/data/2.5/weather?q=$location&appid=$key'));
+    locationData = await http.get(Uri.parse('https://api.openweathermap.org/data/2.5/weather?q=$location&appid=$key&units=metric'));
+    final locationDataParsed = jsonDecode(locationData.body);
+
+   
+
+    setState(() {
+       temperature= locationDataParsed['main']['temp'];
+       location = locationDataParsed['name'];
+    });
+  }
+
+@override
+  void initState() {
+    getLocationData();
+    super.initState();
   }
 
   @override
@@ -34,7 +48,20 @@ class _HomePageState extends State<HomePage> {
              ),
                ),
         
-        child:  Scaffold(
+        child: (temperature==null)
+        ? Scaffold(
+          backgroundColor: Colors.black,
+          body: Center(
+            child : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              CircularProgressIndicator(),
+              Text('please wait, retrieving weather data'),
+          ],
+          ),
+        ),
+        )
+        :Scaffold(
           backgroundColor: Colors.transparent,
           body: Center(
             child: Column(

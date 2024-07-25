@@ -9,10 +9,13 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-    void birFonksiyon(){
+
+  String selectedCity = '';
+
+    
+  void birFonksiyon(){
       print('bir fonksiyon çalıştı');
     }
-
 
     @override
   void initState() {
@@ -21,9 +24,7 @@ class _SearchPageState extends State<SearchPage> {
     super.initState();
   }
 
-
-
-  @override
+    @override
   void dispose() {
     // sayfa kaldırılırken run edilecek metotlar
     print("dispose metodu çalıştı ve logout istendi.");
@@ -59,15 +60,19 @@ class _SearchPageState extends State<SearchPage> {
             elevation: 0,
             backgroundColor: Colors.transparent,
             ),
-          body: const Center(
+          body:  Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Padding(
-                padding: EdgeInsets.symmetric(horizontal:50.0),
+                Padding( 
+                padding:const EdgeInsets.symmetric(horizontal:50.0),
                 child: TextField(
-                  decoration: InputDecoration(hintText: 'şehir seçiniz', border: OutlineInputBorder(borderSide: BorderSide.none)),
-                  style: TextStyle(fontSize: 30),
+                  onChanged: (value) {
+                    selectedCity = value;
+                    print("textfield daki değer: &value ");
+                  },
+                  decoration: const InputDecoration(hintText: 'şehir seçiniz', border: OutlineInputBorder(borderSide: BorderSide.none)),
+                  style: const TextStyle(fontSize: 30),
                   textAlign: TextAlign.center,
                 )
                     ),
