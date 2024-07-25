@@ -19,6 +19,7 @@ class _HomePageState extends State<HomePage> {
   double? temperature;
   final String key = 'b7e858e8f208308427e3567a1b9f9ca6';
   var locationData;
+  String code = 'home';
 
   Future <void>getLocationData()async{
     locationData = await http.get(Uri.parse('https://api.openweathermap.org/data/2.5/weather?q=$location&appid=$key&units=metric'));
@@ -29,6 +30,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
        temperature= locationDataParsed['main']['temp'];
        location = locationDataParsed['name'];
+       code = locationDataParsed['weather'].first['main'];
     });
   }
 
@@ -41,9 +43,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration:  BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('assets/home.jpg'),
+          image: AssetImage('assets/$code.jpg'),
           fit: BoxFit.cover,
              ),
                ),
@@ -67,24 +69,8 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton
-                (onPressed: ()async{
-                  print ("getlocation data çagırılmadan once: $locationData" );
-
-                  await getLocationData();
-                  debugPrint("getlocation data çagırıldıktan sonra: $locationData");
-
-                  final locationDataParsed = jsonDecode(locationData.body);
-
-
-                  print(locationDataParsed);
-                  print(locationDataParsed.runtimeType);
-
-                  print(locationDataParsed['main']['temp']);
-
-
-                    }, 
-                child: Text("getLocationData")),
+           
+                   
                    Text("$temperature C°",style: TextStyle(fontSize: 70,fontWeight: FontWeight.bold),),
                      Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -93,8 +79,11 @@ class _HomePageState extends State<HomePage> {
                       location,
                       style: TextStyle(fontSize: 30),
                       ),
-                      IconButton(onPressed: () {
-                        Navigator.push(context,MaterialPageRoute(builder: (context)=> const SearchPage()));
+                      IconButton(onPressed: () async{
+                        final selectedCity = await Navigator.push(context,MaterialPageRoute(builder: (context)=> const SearchPage()));
+                        print(selectedCity);
+                        location = selectedCity;
+                        getLocationData();
                       }, 
                       icon: const Icon(Icons.search))
                   ],
