@@ -3,5 +3,7 @@
     "vscode-pets.position": "explorer",
     "vscode-pets.theme": "beach",
     "vscode-pets.throwBallWithMouse": true,
-    "cmake.sourceDirectory": "C:/Users/user/Documents/GitHub/weather_app/linux"
+    "cmake.sourceDirectory": "C:/Users/user/Documents/GitHub/weather_app/linux",
+    "vscode-pets.petSize": "nano",
+    "vscode-pets.petColor": "orange"
 }
